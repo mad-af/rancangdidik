@@ -7,40 +7,48 @@ async function main() {
   console.log('🌱 Seeding database...');
 
   // Clear existing data
-  await prisma.product.deleteMany();
-  console.log('🗑️  Cleared existing products');
+  await prisma.document.deleteMany();
+  console.log('🗑️  Cleared existing documents');
 
-  // Categories for products
-  const categories = [
-    'Electronics',
-    'Furniture',
-    'Clothing',
-    'Toys',
-    'Groceries',
-    'Books',
-    'Jewelry',
-    'Beauty Products'
+  // Subjects for documents
+  const subjects = [
+    'Mathematics',
+    'Physics',
+    'Chemistry',
+    'Biology',
+    'English',
+    'History',
+    'Geography',
+    'Computer Science',
+    'Art',
+    'Music'
   ];
 
-  // Create sample products
-  const products = [];
+  // Phases for education
+  const phases = ['Elementary', 'Middle School', 'High School', 'University'];
+
+  // Academic years
+  const academicYears = ['2023/2024', '2024/2025', '2022/2023', '2021/2022'];
+
+  // Create sample documents
+  const documents = [];
   for (let i = 1; i <= 20; i++) {
-    const product = {
-      name: faker.commerce.productName(),
-      description: faker.commerce.productDescription(),
-      price: parseFloat(faker.commerce.price({ min: 5, max: 500, dec: 2 })),
-      category: faker.helpers.arrayElement(categories),
-      photo_url: `https://api.slingacademy.com/public/sample-products/${i}.png`
+    const document = {
+      subject: faker.helpers.arrayElement(subjects),
+      teacherName: faker.person.fullName(),
+      phase: faker.helpers.arrayElement(phases),
+      academicYear: faker.helpers.arrayElement(academicYears),
+      attachmentUrl: `https://example.com/documents/document-${i}.pdf`
     };
-    products.push(product);
+    documents.push(document);
   }
 
-  // Insert products
-  await prisma.product.createMany({
-    data: products
+  // Insert documents
+  await prisma.document.createMany({
+    data: documents
   });
 
-  console.log(`✅ Created ${products.length} sample products`);
+  console.log(`✅ Created ${documents.length} sample documents`);
   console.log('🎉 Seeding completed!');
 }
 

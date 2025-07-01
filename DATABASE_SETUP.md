@@ -91,23 +91,23 @@ pnpm db:studio
 
 Setelah setup selesai, Anda dapat menggunakan API endpoints berikut:
 
-### Products API
+### Documents API
 
-- `GET /api/products` - Get all products dengan filtering
+- `GET /api/documents` - Get all documents dengan filtering
   - Query params: `page`, `limit`, `search`, `categories`
-- `POST /api/products` - Create new product
-- `GET /api/products/[id]` - Get product by ID
-- `PUT /api/products/[id]` - Update product
-- `DELETE /api/products/[id]` - Delete product
+- `POST /api/documents` - Create new document
+- `GET /api/documents/[id]` - Get document by ID
+- `PUT /api/documents/[id]` - Update document
+- `DELETE /api/documents/[id]` - Delete document
 
 ### Example API Usage
 
 ```javascript
-// Get products dengan filtering
-fetch('/api/products?page=1&limit=10&search=laptop&categories=electronics')
+// Get documents dengan filtering
+fetch('/api/documents?page=1&limit=10&search=math&subjects=mathematics&phases=foundation')
 
-// Create new product
-fetch('/api/products', {
+// Create new document
+fetch('/api/documents', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({
@@ -166,7 +166,7 @@ npx prisma migrate deploy
 
 ## Features
 
-✅ **CRUD Operations** - Create, Read, Update, Delete products
+✅ **CRUD Operations** - Create, Read, Update, Delete documents
 ✅ **Search & Filter** - Search by name, description, category
 ✅ **Pagination** - Efficient data loading
 ✅ **Form Validation** - Client-side validation dengan Zod

@@ -8,15 +8,15 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { Product } from '@/constants/data';
-import { deleteProduct } from '@/lib/api/products';
+import { Document } from '@/constants/data';
+import { deleteDocument } from '@/lib/api/documents';
 import { IconEdit, IconDotsVertical, IconTrash } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
 interface CellActionProps {
-  data: Product;
+  data: Document;
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
@@ -27,13 +27,13 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const onConfirm = async () => {
     try {
       setLoading(true);
-      await deleteProduct(data.id);
-      toast.success('Product deleted successfully!');
+      await deleteDocument(data.id);
+      toast.success('Document deleted successfully!');
       setOpen(false);
       router.refresh();
     } catch (error) {
-      console.error('Error deleting product:', error);
-      toast.error('Failed to delete product');
+      console.error('Error deleting document:', error);
+      toast.error('Failed to delete document');
     } finally {
       setLoading(false);
     }
@@ -58,7 +58,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
           <DropdownMenuItem
-            onClick={() => router.push(`/dashboard/product/${data.id}`)}
+            onClick={() => router.push(`/dashboard/documents/${data.id}`)}
           >
             <IconEdit className='mr-2 h-4 w-4' /> Update
           </DropdownMenuItem>

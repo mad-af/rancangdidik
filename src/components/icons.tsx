@@ -45,7 +45,7 @@ export const Icons = {
   logo: IconCommand,
   login: IconLogin,
   close: IconX,
-  product: IconShoppingBag,
+  documents: IconFileText,
   spinner: IconLoader2,
   kanban: IconLayoutKanban,
   chevronLeft: IconChevronLeft,

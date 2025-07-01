@@ -1,13 +1,13 @@
 import { NavItem } from '@/types';
 
-export type Product = {
-  photo_url: string;
-  name: string;
-  description: string;
-  created_at: string;
-  price: number;
+export type Document = {
   id: number;
-  category: string;
+  subject: string;
+  teacherName: string;
+  phase: string;
+  academicYear: string;
+  attachmentUrl: string;
+  created_at: string;
   updated_at: string;
 };
 
@@ -22,10 +22,10 @@ export const navItems: NavItem[] = [
     items: [] // Empty array as there are no child items for Dashboard
   },
   {
-    title: 'Product',
-    url: '/dashboard/product',
-    icon: 'product',
-    shortcut: ['p', 'p'],
+    title: 'Documents',
+    url: '/dashboard/documents',
+    icon: 'documents',
+    shortcut: ['d', 'o'],
     isActive: false,
     items: [] // No child items
   },
