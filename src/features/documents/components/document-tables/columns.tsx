@@ -3,22 +3,11 @@ import { Badge } from '@/components/ui/badge';
 import { DataTableColumnHeader } from '@/components/ui/table/data-table-column-header';
 import { Document } from '@/constants/data';
 import { Column, ColumnDef } from '@tanstack/react-table';
-import { CheckCircle2, Text, XCircle, FileText } from 'lucide-react';
+import { CheckCircle2, Text, XCircle, FileText, Download } from 'lucide-react';
 import { CellAction } from '@/features/documents/components/document-tables/cell-action';
 import { PHASE_OPTIONS, SUBJECT_OPTIONS } from './options';
 
 export const columns: ColumnDef<Document>[] = [
-  {
-    accessorKey: 'attachmentUrl',
-    header: 'ATTACHMENT',
-    cell: ({ row }) => {
-      return (
-        <div className='flex items-center justify-center'>
-          <FileText className='h-6 w-6 text-blue-500' />
-        </div>
-      );
-    }
-  },
   {
     id: 'subject',
     accessorKey: 'subject',
@@ -95,6 +84,48 @@ export const columns: ColumnDef<Document>[] = [
     cell: ({ cell }) => {
       const date = new Date(cell.getValue<Document['created_at']>());
       return <div>{date.toLocaleDateString()}</div>;
+    }
+  },
+  {
+    accessorKey: 'attachmentUrl',
+    header: ({ column }: { column: Column<Document, unknown> }) => (
+      <DataTableColumnHeader column={column} title='Attachment' />
+    ),
+    cell: ({ row }) => {
+      const attachmentUrl = row.getValue('attachmentUrl') as string;
+
+      const handleDownload = () => {
+        if (attachmentUrl) {
+          // Create a temporary link element
+          const link = document.createElement('a');
+          link.href = attachmentUrl;
+          link.download = `${row.original.subject}_${row.original.teacherName}.pdf`;
+          link.target = '_blank';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }
+      };
+
+      return (
+        <div>
+          {attachmentUrl ? (
+            <button
+              onClick={handleDownload}
+              className='flex items-center gap-2 rounded-md bg-blue-500 px-3 py-1 text-sm text-white transition-colors duration-200 hover:bg-blue-600'
+              title='Download PDF'
+            >
+              <Download className='h-4 w-4' />
+              Download
+            </button>
+          ) : (
+            <div className='flex cursor-not-allowed items-center gap-2 rounded-md bg-gray-300 px-3 py-1 text-sm text-gray-500'>
+              <FileText className='h-4 w-4' />
+              No File
+            </div>
+          )}
+        </div>
+      );
     }
   },
   {
