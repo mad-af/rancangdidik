@@ -20,9 +20,13 @@ import {
   SelectValue
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { Product } from '@/constants/mock-api';
+import { Product } from '@/constants/data';
+import { createProduct, updateProduct } from '@/lib/api/products';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import * as z from 'zod';
 
 const MAX_FILE_SIZE = 5000000;
@@ -36,20 +40,28 @@ const ACCEPTED_IMAGE_TYPES = [
 const formSchema = z.object({
   image: z
     .any()
-    .refine((files) => files?.length == 1, 'Image is required.')
+    .optional()
     .refine(
-      (files) => files?.[0]?.size <= MAX_FILE_SIZE,
+      (files) =>
+        !files || files?.length === 0 || files?.[0]?.size <= MAX_FILE_SIZE,
       `Max file size is 5MB.`
     )
     .refine(
-      (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
+      (files) =>
+        !files ||
+        files?.length === 0 ||
+        ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
       '.jpg, .jpeg, .png and .webp files are accepted.'
     ),
   name: z.string().min(2, {
     message: 'Product name must be at least 2 characters.'
   }),
-  category: z.string(),
-  price: z.number(),
+  category: z.string().min(1, {
+    message: 'Please select a category.'
+  }),
+  price: z.coerce.number().min(0.01, {
+    message: 'Price must be greater than 0.'
+  }),
   description: z.string().min(10, {
     message: 'Description must be at least 10 characters.'
   })
@@ -62,6 +74,10 @@ export default function ProductForm({
   initialData: Product | null;
   pageTitle: string;
 }) {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const isEditing = !!initialData;
+
   const defaultValues = {
     name: initialData?.name || '',
     category: initialData?.category || '',
@@ -74,8 +90,38 @@ export default function ProductForm({
     values: defaultValues
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Form submission logic would be implemented here
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      setIsLoading(true);
+
+      const productData = {
+        name: values.name,
+        category: values.category,
+        price: values.price,
+        description: values.description,
+        photo_url:
+          initialData?.photo_url ||
+          `https://api.slingacademy.com/public/sample-products/${Math.floor(Math.random() * 20) + 1}.png`
+      };
+
+      if (isEditing && initialData) {
+        await updateProduct(initialData.id, productData);
+        toast.success('Product updated successfully!');
+      } else {
+        await createProduct(productData);
+        toast.success('Product created successfully!');
+      }
+
+      router.push('/dashboard/product');
+      router.refresh();
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      toast.error(
+        isEditing ? 'Failed to update product' : 'Failed to create product'
+      );
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -193,7 +239,13 @@ export default function ProductForm({
                 </FormItem>
               )}
             />
-            <Button type='submit'>Add Product</Button>
+            <Button type='submit' disabled={isLoading}>
+              {isLoading
+                ? 'Saving...'
+                : isEditing
+                  ? 'Update Product'
+                  : 'Add Product'}
+            </Button>
           </form>
         </Form>
       </CardContent>

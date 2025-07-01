@@ -9,20 +9,35 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { Product } from '@/constants/data';
+import { deleteProduct } from '@/lib/api/products';
 import { IconEdit, IconDotsVertical, IconTrash } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 interface CellActionProps {
   data: Product;
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
-  const [loading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
-  const onConfirm = async () => {};
+  const onConfirm = async () => {
+    try {
+      setLoading(true);
+      await deleteProduct(data.id);
+      toast.success('Product deleted successfully!');
+      setOpen(false);
+      router.refresh();
+    } catch (error) {
+      console.error('Error deleting product:', error);
+      toast.error('Failed to delete product');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
