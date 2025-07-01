@@ -10,7 +10,8 @@ export async function GET(request: NextRequest) {
     const search = searchParams.get('search') || '';
     const subjects =
       searchParams.get('subjects')?.split('.').filter(Boolean) || [];
-    const phases = searchParams.get('phases')?.split('.').filter(Boolean) || [];
+    const phases =
+      searchParams.get('phases')?.split('.').filter(Boolean) || [];
 
     const offset = (page - 1) * limit;
 
