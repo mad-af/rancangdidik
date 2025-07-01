@@ -1,6 +1,7 @@
 import { Document } from '@/constants/data';
+import { API_URLS } from '@/lib/config/api';
 
-const API_BASE_URL = '/api/documents';
+const API_BASE_URL = API_URLS.documents;
 
 export interface DocumentsResponse {
   success: boolean;
