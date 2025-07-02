@@ -8,8 +8,9 @@ import { useUser } from '@clerk/nextjs';
 
 const navLinks = [
   { route: 'Home', path: '/landing' },
-  { route: 'Features', path: '/landing#features' },
-  { route: 'Dashboard', path: '/dashboard' }
+  { route: 'Raport Otomatis', path: '/landing#features' },
+  { route: 'Buat RPP', path: '/dashboard' },
+  { route: 'Buat Asesmen', path: '/dashboard' },
 ];
 
 export default function LandingNavbar() {
@@ -35,7 +36,7 @@ export default function LandingNavbar() {
           <div className='flex items-center justify-between py-3 md:block md:py-5'>
             <Link href='/landing' onClick={handleClick}>
               <h1 className='text-2xl font-bold duration-200 lg:hover:scale-[1.10]'>
-                Dashboard Starter
+                RancangDidik
               </h1>
             </Link>
             <div className='flex gap-1 md:hidden'>

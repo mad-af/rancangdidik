@@ -2,8 +2,9 @@ import Link from 'next/link';
 
 const navLinks = [
   { route: 'Home', path: '/landing' },
-  { route: 'Features', path: '/landing#features' },
-  { route: 'Dashboard', path: '/dashboard' }
+  { route: 'Raport Otomatis', path: '/landing#features' },
+  { route: 'Buat RPP', path: '/dashboard' },
+  { route: 'Buat Asesmen', path: '/dashboard' },
 ];
 
 export default function LandingFooter() {
@@ -13,7 +14,7 @@ export default function LandingFooter() {
         <div className='sm:flex sm:items-center sm:justify-between'>
           <Link href='/landing'>
             <h1 className='mb-2 text-2xl font-bold sm:mb-0'>
-              Dashboard Starter
+              RancangDidik
             </h1>
           </Link>
           <ul className='text-primary mb-6 flex flex-wrap items-center opacity-60 sm:mb-0'>
@@ -29,7 +30,7 @@ export default function LandingFooter() {
         <hr className='text-muted-foreground my-6 sm:mx-auto lg:my-8' />
         <span className='text-muted-foreground block text-sm sm:text-center'>
           © {new Date().getFullYear()}{' '}
-          <span className='hover:underline'>Dashboard Starter</span>. All Rights
+          <span className='hover:underline'>RancangDidik</span>. All Rights
           Reserved.
         </span>
       </div>

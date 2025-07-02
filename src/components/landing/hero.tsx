@@ -20,7 +20,7 @@ export default function HeroHeader() {
           href='/auth/sign-in'
           className={`w-[10rem] ${cn(buttonVariants({ size: 'lg' }))}`}
         >
-          Get started
+          Mulai Sekarang
         </Link>
       </div>
       {heroHeader.image !== '' ? (

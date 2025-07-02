@@ -8,9 +8,9 @@ import { HeroHeader, ContentSection } from '@/types/landing-contents';
  ==================== */
 
 export const heroHeader: HeroHeader = {
-  header: `Dashboard made easy`,
-  subheader: `Easy to setup. Customizable. Quick. Responsive.`,
-  image: `/hero-img.webp`
+  header: `RancangDidik: Platform Perencanaan Edukasi Lengkap dengan AI Otomatisasi`,
+  subheader: `RancangDidik memudahkan pembuatan RPP, soal otomatis, sesi mingguan, dan raport digital—diberdayai oleh Generative AI.`,
+  image: ``
 };
 
 export const featureCards: ContentSection = {
@@ -36,23 +36,22 @@ export const featureCards: ContentSection = {
 };
 
 export const features: ContentSection = {
-  header: `Features`,
-  subheader: `Why use this dashboard?`,
-  image: `/features-img.webp`,
+  header: `Fitur Utama`,
+  subheader: `Segera ciptakan RPP, soal, sesi belajar, dan raport digital secara otomatis menggunakan Generative AI.`,
   content: [
     {
-      text: `SEO Optimized`,
-      subtext: `Improved website visibility on search engines`,
+      text: `RPP Otomatis`,
+      subtext: `Buat RPP secara otomatis berdasaran kebutuhan`,
       icon: 'fileSearch'
     },
     {
-      text: `Highly Performant`,
-      subtext: `Fast loading times and smooth performance`,
+      text: `AssesGen Engine`,
+      subtext: `Buat soal asesmen essay dan pilihan ganda secara otomatis menggunakan AssesGen Engine`,
       icon: 'barChart'
     },
     {
-      text: `Easy Customizability`,
-      subtext: `Change your content and layout with little effort`,
+      text: `Raport Digital`,
+      subtext: `Buat raport secara otomatis`,
       icon: 'settings'
     }
   ]

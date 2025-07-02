@@ -14,8 +14,8 @@ export default function Features() {
           {features.header}
         </HeadingText>
       ) : null}
-      <div className='grid grid-cols-1 gap-8 md:grid-cols-2'>
-        <div className='grid grid-cols-1 gap-8'>
+      <div className='align-middle'>
+        <div className=''>
           {features.content.map((cards) => {
             const Icon = Icons[cards.icon || 'blank'];
 
@@ -39,14 +39,6 @@ export default function Features() {
             );
           })}
         </div>
-        <div
-          className='md:border'
-          style={{
-            backgroundImage: `url(${features.image})`,
-            backgroundRepeat: `no-repeat`,
-            backgroundSize: `cover`
-          }}
-        ></div>
       </div>
     </section>
   );
