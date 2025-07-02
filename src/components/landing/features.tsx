@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import HeadingText from './heading-text';
 import { features } from '@/config/landing-contents';
 import { Icons } from '@/components/icons';
