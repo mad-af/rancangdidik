@@ -14,50 +14,90 @@ export type Document = {
 //Info: The following data is used for the sidebar navigation and Cmd K bar.
 export const navItems: NavItem[] = [
   {
-    title: 'Dashboard',
-    url: '/dashboard/overview',
-    icon: 'dashboard',
+    title: 'List RPP',
+    url: '/dashboard/rpp',
+    icon: '/Category-2.svg',
     isActive: false,
     shortcut: ['d', 'd'],
     items: [] // Empty array as there are no child items for Dashboard
   },
   {
-    title: 'Documents',
+    title: 'Analytics',
     url: '/dashboard/documents',
-    icon: 'documents',
+    icon: '/Chart.svg',
     shortcut: ['d', 'o'],
     isActive: false,
     items: [] // No child items
   },
-  {
-    title: 'Account',
-    url: '#', // Placeholder as there is no direct link for the parent
-    icon: 'billing',
-    isActive: true,
+  // {
+  //   title: 'Account',
+  //   url: '#', // Placeholder as there is no direct link for the parent
+  //   icon: 'billing',
+  //   isActive: true,
 
-    items: [
-      {
-        title: 'Profile',
-        url: '/dashboard/profile',
-        icon: 'userPen',
-        shortcut: ['m', 'm']
-      },
-      {
-        title: 'Login',
-        shortcut: ['l', 'l'],
-        url: '/',
-        icon: 'login'
-      }
-    ]
-  },
+  //   items: [
+  //     {
+  //       title: 'Profile',
+  //       url: '/dashboard/profile',
+  //       icon: 'userPen',
+  //       shortcut: ['m', 'm']
+  //     },
+  //     {
+  //       title: 'Login',
+  //       shortcut: ['l', 'l'],
+  //       url: '/',
+  //       icon: 'login'
+  //     }
+  //   ]
+  // },
   {
-    title: 'Kanban',
+    title: 'Invoice',
     url: '/dashboard/kanban',
-    icon: 'kanban',
+    icon: '/Ticket.svg',
     shortcut: ['k', 'k'],
     isActive: false,
     items: [] // No child items
-  }
+  },
+  {
+    title: 'Schedule',
+    url: '/dashboard/kanban',
+    icon: '/Document.svg',
+    shortcut: ['k', 'k'],
+    isActive: false,
+    items: [] // No child items
+  },
+  {
+    title: 'Calendar',
+    url: '/dashboard/kanban',
+    icon: '/Calendar.svg',
+    shortcut: ['k', 'k'],
+    isActive: false,
+    items: [] // No child items
+  },
+  {
+    title: 'Messages',
+    url: '/dashboard/kanban',
+    icon: '/Activity.svg',
+    shortcut: ['k', 'k'],
+    isActive: false,
+    items: [] // No child items
+  },
+  {
+    title: 'Notification',
+    url: '/dashboard/kanban',
+    icon: '/Notification.svg',
+    shortcut: ['k', 'k'],
+    isActive: false,
+    items: [] // No child items
+  },
+  {
+    title: 'Settings',
+    url: '/dashboard/kanban',
+    icon: '/Setting.svg',
+    shortcut: ['k', 'k'],
+    isActive: false,
+    items: [] // No child items
+  },
 ];
 
 export interface SaleUser {
