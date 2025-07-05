@@ -77,13 +77,14 @@ export default function AppSidebar() {
 
   return (
     <Sidebar collapsible='icon'>
-      <SidebarContent className='overflow-x-hidden'>
+      <SidebarContent className='overflow-x-hidden flex'>
         <SidebarGroup>
           <Image
-            src="/Logo and company.png" // Place your logo in /public/logo.png
-            alt={company.name}
-            width={120}
-            height={120}
+            src="/Logo.svg" // Place your logo in /public/logo.png
+            alt={company.name}  
+            width={153}
+            height={153}
+            className='p-3'
           />
           <SidebarMenu>
   {navItems.map((item) => {
