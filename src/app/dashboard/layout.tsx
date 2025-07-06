@@ -23,7 +23,7 @@ export default async function DashboardLayout({
       <SidebarProvider defaultOpen={defaultOpen}>
         <AppSidebar />
         <SidebarInset>
-          <Header />
+          {/* <Header /> */}
           {/* page main content */}
           {children}
           {/* page main content ends */}
