@@ -1,4 +1,13 @@
 import { NavItem } from '@/types';
+import Ticket from '@/assets/icons/Ticket';
+import Chart from '@/assets/icons/Chart';
+import Document from '@/assets/icons/Document';
+import Calendar from '@/assets/icons/Calendar';
+import Activity from '@/assets/icons/Activity';
+import Notification from '@/assets/icons/Notification';
+import Setting from '@/assets/icons/Setting';
+import Category from '@/assets/icons/Category';
+
 
 export type Document = {
   id: number;
@@ -16,7 +25,7 @@ export const navItems: NavItem[] = [
   {
     title: 'List RPP',
     url: '/dashboard/rpp',
-    icon: '/Category-2.svg',
+    icon: Category,
     isActive: false,
     shortcut: ['d', 'd'],
     items: [] // Empty array as there are no child items for Dashboard
@@ -24,7 +33,7 @@ export const navItems: NavItem[] = [
   {
     title: 'Analytics',
     url: '/dashboard/documents',
-    icon: '/Chart.svg',
+    icon: Chart,
     shortcut: ['d', 'o'],
     isActive: false,
     items: [] // No child items
@@ -53,7 +62,7 @@ export const navItems: NavItem[] = [
   {
     title: 'Invoice',
     url: '/dashboard/kanban',
-    icon: '/Ticket.svg',
+    icon: Ticket,
     shortcut: ['k', 'k'],
     isActive: false,
     items: [] // No child items
@@ -61,7 +70,7 @@ export const navItems: NavItem[] = [
   {
     title: 'Schedule',
     url: '/dashboard/kanban',
-    icon: '/Document.svg',
+    icon: Document,
     shortcut: ['k', 'k'],
     isActive: false,
     items: [] // No child items
@@ -69,7 +78,7 @@ export const navItems: NavItem[] = [
   {
     title: 'Calendar',
     url: '/dashboard/kanban',
-    icon: '/Calendar.svg',
+    icon: Calendar,
     shortcut: ['k', 'k'],
     isActive: false,
     items: [] // No child items
@@ -77,7 +86,7 @@ export const navItems: NavItem[] = [
   {
     title: 'Messages',
     url: '/dashboard/kanban',
-    icon: '/Activity.svg',
+    icon: Activity,
     shortcut: ['k', 'k'],
     isActive: false,
     items: [] // No child items
@@ -85,7 +94,7 @@ export const navItems: NavItem[] = [
   {
     title: 'Notification',
     url: '/dashboard/kanban',
-    icon: '/Notification.svg',
+    icon: Notification,
     shortcut: ['k', 'k'],
     isActive: false,
     items: [] // No child items
@@ -93,7 +102,7 @@ export const navItems: NavItem[] = [
   {
     title: 'Settings',
     url: '/dashboard/kanban',
-    icon: '/Setting.svg',
+    icon: Setting,
     shortcut: ['k', 'k'],
     isActive: false,
     items: [] // No child items

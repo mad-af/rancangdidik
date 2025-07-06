@@ -53,6 +53,7 @@ export const company = {
   logo: IconPhotoUp,
   plan: 'Enterprise'
 };
+import Ticket from '@/assets/icons/Ticket';
 
 const tenants = [
   { id: '1', name: 'Acme Inc' },
@@ -81,82 +82,74 @@ export default function AppSidebar() {
         <SidebarGroup>
           <Image
             src="/Logo.svg" // Place your logo in /public/logo.png
-            alt={company.name}  
+            alt={company.name}
             width={153}
             height={153}
             className='p-3'
           />
           <SidebarMenu>
-  {navItems.map((item) => {
-    const renderIcon = (icon?: keyof typeof Icons | string) => {
-      if (!icon) return null;
-      if (typeof icon === 'string' && icon in Icons) {
-        const IconComponent = Icons[icon as keyof typeof Icons];
-        return <IconComponent className="w-5 h-5" />;
-      }
-      return (
-        <Image
-          src={icon}
-          alt="custom icon"
-          width={20}
-          height={20}
-          className="object-contain"
-        />
-      );
-    };
+            {navItems.map((item) => {
+              const renderIcon = (icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>) => {
+                if (!icon) return null;
 
-    return item?.items && item?.items?.length > 0 ? (
-      <Collapsible
-        key={item.title}
-        asChild
-        defaultOpen={item.isActive}
-        className='group/collapsible'
-      >
-        <SidebarMenuItem>
-          <CollapsibleTrigger asChild>
-            <SidebarMenuButton
-              tooltip={item.title}
-              isActive={pathname === item.url}
-            >
-              {renderIcon(item.icon)}
-              <span>{item.title}</span>
-              <IconChevronRight className='ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90' />
-            </SidebarMenuButton>
-          </CollapsibleTrigger>
-          <CollapsibleContent>
-            <SidebarMenuSub>
-              {item.items?.map((subItem) => (
-                <SidebarMenuSubItem key={subItem.title}>
-                  <SidebarMenuSubButton
+                // Functional SVG component
+                const IconComponent = icon;
+                return <IconComponent className="w-12 h-12 text-red-50"/>;
+
+              };
+
+              return item?.items && item?.items?.length > 0 ? (
+                <Collapsible
+                  key={item.title}
+                  asChild
+                  defaultOpen={item.isActive}
+                  className='group/collapsible'
+                >
+                  <SidebarMenuItem>
+                    <CollapsibleTrigger asChild>
+                      <SidebarMenuButton
+                        tooltip={item.title}
+                        isActive={pathname === item.url}
+                      >
+                        {renderIcon(item.icon)}
+                        <span>{item.title}</span>
+                        <IconChevronRight className='ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90' />
+                      </SidebarMenuButton>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent>
+                      <SidebarMenuSub>
+                        {item.items?.map((subItem) => (
+                          <SidebarMenuSubItem key={subItem.title}>
+                            <SidebarMenuSubButton
+                              asChild
+                              isActive={pathname === subItem.url}
+                            >
+                              <Link href={subItem.url}>
+                                <span>{subItem.title}</span>
+                              </Link>
+                            </SidebarMenuSubButton>
+                          </SidebarMenuSubItem>
+                        ))}
+                      </SidebarMenuSub>
+                    </CollapsibleContent>
+                  </SidebarMenuItem>
+                </Collapsible>
+              ) : (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton
                     asChild
-                    isActive={pathname === subItem.url}
+                    tooltip={item.title}
+                    isActive={pathname === item.url}
                   >
-                    <Link href={subItem.url}>
-                      <span>{subItem.title}</span>
+                    <Link href={item.url}>
+                      {renderIcon(item.icon)}
+                      <span>{item.title}</span>
                     </Link>
-                  </SidebarMenuSubButton>
-                </SidebarMenuSubItem>
-              ))}
-            </SidebarMenuSub>
-          </CollapsibleContent>
-        </SidebarMenuItem>
-      </Collapsible>
-    ) : (
-      <SidebarMenuItem key={item.title}>
-        <SidebarMenuButton
-          asChild
-          tooltip={item.title}
-          isActive={pathname === item.url}
-        >
-          <Link href={item.url}>
-            {renderIcon(item.icon)}
-            <span>{item.title}</span>
-          </Link>
-        </SidebarMenuButton>
-      </SidebarMenuItem>
-    );
-  })}
-</SidebarMenu>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              );
+            })}
+          </SidebarMenu>
 
         </SidebarGroup>
       </SidebarContent>

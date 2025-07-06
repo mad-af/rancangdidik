@@ -1,4 +1,5 @@
 import { Icons } from '@/components/icons';
+import { SVGProps } from 'react';
 
 export interface NavItem {
   title: string;
@@ -6,7 +7,7 @@ export interface NavItem {
   disabled?: boolean;
   external?: boolean;
   shortcut?: [string, string];
-  icon?: keyof typeof Icons | string; // now supports both
+  icon?: React.FC<SVGProps<SVGSVGElement>>; // now supports both
   label?: string;
   description?: string;
   isActive?: boolean;
