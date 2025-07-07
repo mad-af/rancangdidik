@@ -77,25 +77,26 @@ export default function AppSidebar() {
   }, [isOpen]);
 
   return (
-    <Sidebar collapsible='icon'>
-      <SidebarContent className='overflow-x-hidden flex'>
+    <Sidebar collapsible='none'>
+      <SidebarContent className='flex justify-between overflow-x-hidden'>
         <SidebarGroup>
           <Image
-            src="/Logo.svg" // Place your logo in /public/logo.png
+            src='/Logo.svg' // Place your logo in /public/logo.png
             alt={company.name}
-            width={153}
-            height={153}
-            className='p-3'
+            width={256}
+            height={256}
+            className='p-6'
           />
-          <SidebarMenu>
+          <SidebarMenu className='flex-1 overflow-y-auto'>
             {navItems.map((item) => {
-              const renderIcon = (icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>) => {
+              const renderIcon = (
+                icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>
+              ) => {
                 if (!icon) return null;
 
                 // Functional SVG component
                 const IconComponent = icon;
-                return <IconComponent className="w-12 h-12"/>;
-
+                return <IconComponent className='mr-2 h-24 w-24 scale-120' />;
               };
 
               return item?.items && item?.items?.length > 0 ? (
@@ -150,7 +151,6 @@ export default function AppSidebar() {
               );
             })}
           </SidebarMenu>
-
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
