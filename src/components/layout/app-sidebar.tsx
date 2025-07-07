@@ -94,7 +94,7 @@ export default function AppSidebar() {
 
                 // Functional SVG component
                 const IconComponent = icon;
-                return <IconComponent className="w-12 h-12 text-red-50"/>;
+                return <IconComponent className="w-12 h-12"/>;
 
               };
 
