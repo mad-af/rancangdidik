@@ -1,5 +1,4 @@
 "use client"
-
 import PageContainer from '@/components/layout/page-container';
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -16,10 +15,10 @@ import Link from 'next/link';
 export default function RPPPage() {
   const router = useRouter()
   const [searchQuery, setSearchQuery] = useState("")
-  
+
   return (
     <PageContainer>
-      <div className="space-y-4">
+      <div className="space-y-6">
         <div className="flex items-start justify-between">
           <Heading
             title="RPP Management"
@@ -33,20 +32,24 @@ export default function RPPPage() {
             Create New RPP
           </Link>
         </div>
+        
         <Separator />
         
         <div className="flex items-center justify-between">
           <div className="flex flex-1 items-center space-x-2">
-            <Input 
-              placeholder="Search RPP documents..." 
+            <Input
+              placeholder="Search RPP documents..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="h-8 w-[150px] lg:w-[250px]" 
+              className="h-8 w-[150px] lg:w-[250px]"
             />
           </div>
         </div>
-
-        <RPPTable searchQuery={searchQuery}/>
+        
+        {/* Table container with background styling */}
+        <div className="bg-gray-50 rounded-lg p-6">
+          <RPPTable searchQuery={searchQuery} />
+        </div>
       </div>
     </PageContainer>
   )

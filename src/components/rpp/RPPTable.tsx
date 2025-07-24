@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Button } from "@/components/ui/button"
-import { DownloadIcon, Loader2, ChevronLeft, ChevronRight } from "lucide-react"
+import { DownloadIcon, Loader2, ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react"
+import Calendar from "@/assets/icons/Calendar"
 import { RPPRowMenu } from "./RPPRowMenu"
 import { getDocuments, type DocumentFilters } from "@/lib/api/documents"
 import { Document } from "@/constants/data"
@@ -16,22 +17,25 @@ export function RPPTable({ searchQuery }: RPPTableProps) {
   const [error, setError] = useState<string | null>(null)
   const [totalDocuments, setTotalDocuments] = useState(0)
   const [currentPage, setCurrentPage] = useState(1)
+  const [selectedRows, setSelectedRows] = useState<number[]>([])
+
   const limit = 10
 
   const fetchDocuments = async () => {
     try {
       setLoading(true)
       setError(null)
-      
+
       const filters: DocumentFilters = {
         page: currentPage,
         limit,
         search: searchQuery
       }
-      
+
       const response = await getDocuments(filters)
       setDocuments(response.documents)
       setTotalDocuments(response.total_documents)
+      setSelectedRows([]) // reset selection on page change
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch documents')
     } finally {
@@ -44,7 +48,6 @@ export function RPPTable({ searchQuery }: RPPTableProps) {
   }, [searchQuery, currentPage])
 
   const handleDocumentDeleted = () => {
-    // Refresh the current page data
     fetchDocuments()
   }
 
@@ -54,6 +57,22 @@ export function RPPTable({ searchQuery }: RPPTableProps) {
       month: 'short',
       year: 'numeric'
     })
+  }
+
+  const isAllSelected = selectedRows.length === documents.length
+  const toggleSelectAll = () => {
+    if (isAllSelected) {
+      setSelectedRows([])
+    } else {
+      setSelectedRows(documents.map((_, i) => i))
+    }
+  }
+  const toggleRow = (index: number) => {
+    setSelectedRows((prev) =>
+      prev.includes(index)
+        ? prev.filter((i) => i !== index)
+        : [...prev, index]
+    )
   }
 
   if (loading) {
@@ -78,65 +97,70 @@ export function RPPTable({ searchQuery }: RPPTableProps) {
   }
 
   return (
-    <div className="border rounded-md">
-      <table className="w-full table-auto text-left">
-        <thead className="bg-muted">
-          <tr>
-            <th className="p-3"><Checkbox /></th>
-            <th className="p-3">Mata Pelajaran</th>
-            <th className="p-3">Nama Guru</th>
-            <th className="p-3">Fase</th>
-            <th className="p-3">Semester</th>
-            <th className="p-3">Tahun Ajaran</th>
-            <th className="p-3">Tanggal Pembuatan</th>
-            <th className="p-3">Attachments</th>
-            <th className="p-3 text-center">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {documents.length > 0 ? (
-            documents.map((document) => (
-              <tr key={document.id} className="border-b hover:bg-muted/40">
-                <td className="p-3"><Checkbox /></td>
-                <td className="p-3">{document.subject}</td>
-                <td className="p-3">{document.teacherName}</td>
-                <td className="p-3">{document.phase}</td>
-                <td className="p-3">{document.semester}</td>
-                <td className="p-3">{document.academicYear}</td>
-                <td className="p-3">{formatDate(document.created_at)}</td>
-                <td className="p-3">
-                  {document.attachmentUrl ? (
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      className="text-green-700 border-green-500"
-                      onClick={() => window.open(document.attachmentUrl, '_blank')}
-                    >
-                      <DownloadIcon className="w-4 h-4 mr-1" />
-                      PDF
-                    </Button>
-                  ) : (
-                    <span className="text-muted-foreground text-sm">No attachment</span>
-                  )}
-                </td>
-                <td className="p-3 text-center">
-                   <RPPRowMenu 
-                     documentId={document.id} 
-                     onDocumentDeleted={handleDocumentDeleted}
-                   />
-                 </td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan={8} className="text-center p-6 text-muted-foreground">
-                {searchQuery ? 'No matching records found.' : 'No documents available.'}
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-      
+    <div className="space-y-4">
+      {/* Header */}
+      <div className="grid grid-cols-[40px_1fr_1fr_1fr_1fr_1fr_1fr_40px] items-center px-6 text-sm font-semibold text-muted-foreground">
+        <Checkbox
+          checked={isAllSelected}
+          onCheckedChange={toggleSelectAll}
+        />
+        <div>Mata Pelajaran</div>
+        <div>Nama Guru</div>
+        <div>Fase</div>
+        <div>Tahun Ajaran</div>
+        <div>Tanggal Pembuatan</div>
+        <div>Attachments</div>
+        <div></div>
+      </div>
+
+      {/* Rows */}
+      {documents.length > 0 ? (
+        documents.map((doc, idx) => (
+          <div
+            key={doc.id}
+            className="grid grid-cols-[40px_1fr_1fr_1fr_1fr_1fr_1fr_40px] items-center bg-white rounded-xl shadow-sm px-6 py-4 hover:shadow-md transition"
+          >
+            <Checkbox
+              checked={selectedRows.includes(idx)}
+              onCheckedChange={() => toggleRow(idx)}
+            />
+            <div className="font-medium text-sm">{doc.subject}</div>
+            <div className="text-sm">{doc.teacherName}</div>
+            <div className="text-sm">{doc.phase}</div>
+            <div className="text-sm">{doc.academicYear}</div>
+            <div className="flex items-center gap-1 text-sm text-gray-600">
+              <Calendar className="w-4 h-4 text-blue-600" />
+              {formatDate(doc.created_at)}
+            </div>
+            <div>
+              {doc.attachmentUrl ? (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="text-green-600 border-green-400 bg-green-50 hover:bg-green-100"
+                  onClick={() => window.open(doc.attachmentUrl, '_blank')}
+                >
+                  <DownloadIcon className="w-4 h-4 mr-1" />
+                  PDF
+                </Button>
+              ) : (
+                <span className="text-sm text-muted-foreground">No attachment</span>
+              )}
+            </div>
+            <div className="justify-self-end">
+              <RPPRowMenu
+                documentId={doc.id}
+                onDocumentDeleted={handleDocumentDeleted}
+              />
+            </div>
+          </div>
+        ))
+      ) : (
+        <div className="text-center p-6 text-muted-foreground">
+          {searchQuery ? 'No matching records found.' : 'No documents available.'}
+        </div>
+      )}
+
       {/* Pagination Controls */}
       {totalDocuments > 0 && (
         <div className="flex items-center justify-between px-4 py-3 border-t">
