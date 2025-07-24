@@ -24,6 +24,7 @@ export interface CreateDocumentData {
   subject: string;
   teacherName: string;
   phase: string;
+  semester: string;
   academicYear: string;
   attachmentUrl?: string;
 }

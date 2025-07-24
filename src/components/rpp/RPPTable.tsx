@@ -86,6 +86,7 @@ export function RPPTable({ searchQuery }: RPPTableProps) {
             <th className="p-3">Mata Pelajaran</th>
             <th className="p-3">Nama Guru</th>
             <th className="p-3">Fase</th>
+            <th className="p-3">Semester</th>
             <th className="p-3">Tahun Ajaran</th>
             <th className="p-3">Tanggal Pembuatan</th>
             <th className="p-3">Attachments</th>
@@ -100,6 +101,7 @@ export function RPPTable({ searchQuery }: RPPTableProps) {
                 <td className="p-3">{document.subject}</td>
                 <td className="p-3">{document.teacherName}</td>
                 <td className="p-3">{document.phase}</td>
+                <td className="p-3">{document.semester}</td>
                 <td className="p-3">{document.academicYear}</td>
                 <td className="p-3">{formatDate(document.created_at)}</td>
                 <td className="p-3">

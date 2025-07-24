@@ -22,6 +22,7 @@ export default function EditRPPPage() {
     subject: "",
     teacherName: "",
     phase: "",
+    semester: "",
     academicYear: "",
     attachmentUrl: ""
   })
@@ -35,6 +36,7 @@ export default function EditRPPPage() {
           subject: document.subject,
           teacherName: document.teacherName,
           phase: document.phase,
+          semester: document.semester,
           academicYear: document.academicYear,
           attachmentUrl: document.attachmentUrl || ""
         })
@@ -59,7 +61,7 @@ export default function EditRPPPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
-    if (!formData.subject || !formData.teacherName || !formData.phase || !formData.academicYear) {
+    if (!formData.subject || !formData.teacherName || !formData.phase || !formData.semester || !formData.academicYear) {
       toast.error("Mohon lengkapi semua field yang wajib diisi")
       return
     }
@@ -136,7 +138,7 @@ export default function EditRPPPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="phase">Fase *</Label>
                 <Select 
@@ -158,6 +160,22 @@ export default function EditRPPPage() {
               </div>
               
               <div className="space-y-2">
+                <Label htmlFor="semester">Semester *</Label>
+                <Select 
+                  value={formData.semester} 
+                  onValueChange={(value) => handleInputChange("semester", value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Pilih semester" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Ganjil">Ganjil</SelectItem>
+                    <SelectItem value="Genap">Genap</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div className="space-y-2">
                 <Label htmlFor="academicYear">Tahun Ajaran *</Label>
                 <Select 
                   value={formData.academicYear} 
@@ -167,10 +185,9 @@ export default function EditRPPPage() {
                     <SelectValue placeholder="Pilih tahun ajaran" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Ganjil 2024/2025">Ganjil 2024/2025</SelectItem>
-                    <SelectItem value="Genap 2024/2025">Genap 2024/2025</SelectItem>
-                    <SelectItem value="Ganjil 2025/2026">Ganjil 2025/2026</SelectItem>
-                    <SelectItem value="Genap 2025/2026">Genap 2025/2026</SelectItem>
+                    <SelectItem value="2024/2025">2024/2025</SelectItem>
+                    <SelectItem value="2025/2026">2025/2026</SelectItem>
+                    <SelectItem value="2026/2027">2026/2027</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

@@ -19,6 +19,7 @@ export default function CreateRPPPage() {
     subject: "",
     teacherName: "",
     phase: "",
+    semester: "",
     academicYear: "",
     attachmentUrl: ""
   })
@@ -30,7 +31,7 @@ export default function CreateRPPPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
-    if (!formData.subject || !formData.teacherName || !formData.phase || !formData.academicYear) {
+    if (!formData.subject || !formData.teacherName || !formData.phase || !formData.semester || !formData.academicYear) {
       toast.error("Mohon lengkapi semua field yang wajib diisi")
       return
     }
@@ -118,22 +119,37 @@ export default function CreateRPPPage() {
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="academicYear">Tahun Ajaran *</Label>
+                <Label htmlFor="semester">Semester *</Label>
                 <Select 
-                  value={formData.academicYear} 
-                  onValueChange={(value) => handleInputChange("academicYear", value)}
+                  value={formData.semester} 
+                  onValueChange={(value) => handleInputChange("semester", value)}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Pilih tahun ajaran" />
+                    <SelectValue placeholder="Pilih semester" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Ganjil 2024/2025">Ganjil 2024/2025</SelectItem>
-                    <SelectItem value="Genap 2024/2025">Genap 2024/2025</SelectItem>
-                    <SelectItem value="Ganjil 2025/2026">Ganjil 2025/2026</SelectItem>
-                    <SelectItem value="Genap 2025/2026">Genap 2025/2026</SelectItem>
+                    <SelectItem value="Ganjil">Ganjil</SelectItem>
+                    <SelectItem value="Genap">Genap</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="academicYear">Tahun Ajaran *</Label>
+              <Select 
+                value={formData.academicYear} 
+                onValueChange={(value) => handleInputChange("academicYear", value)}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Pilih tahun ajaran" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="2024/2025">2024/2025</SelectItem>
+                  <SelectItem value="2025/2026">2025/2026</SelectItem>
+                  <SelectItem value="2026/2027">2026/2027</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="space-y-2">

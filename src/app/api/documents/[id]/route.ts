@@ -50,7 +50,7 @@ export async function PUT(
   try {
     const id = parseInt(params.id);
     const body = await request.json();
-    const { subject, teacherName, phase, academicYear, attachmentUrl } = body;
+    const { subject, teacherName, phase, semester, academicYear, attachmentUrl } = body;
 
     if (isNaN(id)) {
       return NextResponse.json(
@@ -78,6 +78,7 @@ export async function PUT(
         subject: subject || existingDocument.subject,
         teacherName: teacherName || existingDocument.teacherName,
         phase: phase || existingDocument.phase,
+        semester: semester || existingDocument.semester,
         academicYear: academicYear || existingDocument.academicYear,
         attachmentUrl:
           attachmentUrl !== undefined

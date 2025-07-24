@@ -15,6 +15,7 @@ model Document {
   subject       String
   teacherName   String
   phase         String
+  semester     String   @default("Ganjil")
   academicYear  String
   attachmentUrl String
   created_at    DateTime @default(now())

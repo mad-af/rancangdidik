@@ -14,6 +14,7 @@ export type Document = {
   subject: string;
   teacherName: string;
   phase: string;
+  semester: string;
   academicYear: string;
   attachmentUrl: string;
   created_at: string;

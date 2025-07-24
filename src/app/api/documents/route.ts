@@ -68,10 +68,10 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { subject, teacherName, phase, academicYear, attachmentUrl } = body;
+    const { subject, teacherName, phase, semester, academicYear, attachmentUrl } = body;
 
     // Validate required fields
-    if (!subject || !teacherName || !phase || !academicYear) {
+    if (!subject || !teacherName || !phase || !semester || !academicYear) {
       return NextResponse.json(
         { success: false, message: 'Missing required fields' },
         { status: 400 }
@@ -83,6 +83,7 @@ export async function POST(request: NextRequest) {
         subject,
         teacherName,
         phase,
+        semester,
         academicYear,
         attachmentUrl: attachmentUrl || ''
       }
