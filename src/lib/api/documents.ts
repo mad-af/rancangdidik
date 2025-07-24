@@ -126,6 +126,29 @@ export async function getDocument(id: number): Promise<Document> {
   return response.document;
 }
 
+// Generate PDF for a document
+export interface GeneratePDFResponse {
+  success: boolean;
+  message: string;
+  pdfUrl: string;
+  fileName: string;
+}
+
+export async function generateDocumentPDF(id: number): Promise<GeneratePDFResponse> {
+  const response = await fetch(`${API_BASE_URL}/${id}/generate-pdf`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to generate PDF for document with ID ${id}`);
+  }
+
+  return response.json();
+}
+
 // Delete a document
 export async function deleteDocument(
   id: number
