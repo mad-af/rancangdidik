@@ -1,91 +1,77 @@
 # Database Setup Guide
 
-Panduan ini akan membantu Anda mengatur PostgreSQL database untuk aplikasi Next.js Dashboard.
+Panduan ini akan membantu Anda mengatur SQLite database untuk aplikasi Next.js Dashboard.
 
 ## Prerequisites
 
-1. **PostgreSQL** - Pastikan PostgreSQL sudah terinstall di sistem Anda
-2. **Node.js** - Versi 18 atau lebih tinggi
-3. **pnpm** - Package manager yang digunakan dalam project ini
+1. **Node.js** - Versi 18 atau lebih tinggi
+2. **npm** - Package manager yang digunakan dalam project ini
+3. **SQLite** - Database file-based yang ringan (tidak perlu instalasi terpisah)
 
 ## Setup Database
 
 ### 1. Install Dependencies
 
 ```bash
-pnpm install
+npm install
 ```
 
-### 2. Setup PostgreSQL Database
+### 2. Setup SQLite Database
 
-#### Opsi A: Local PostgreSQL
-
-1. Buat database baru:
-```sql
-CREATE DATABASE nextjs_dashboard;
-```
-
-2. Buat user baru (opsional):
-```sql
-CREATE USER dashboard_user WITH PASSWORD 'your_password';
-GRANT ALL PRIVILEGES ON DATABASE nextjs_dashboard TO dashboard_user;
-```
-
-#### Opsi B: Docker PostgreSQL
-
-```bash
-docker run --name postgres-dashboard \
-  -e POSTGRES_DB=nextjs_dashboard \
-  -e POSTGRES_USER=dashboard_user \
-  -e POSTGRES_PASSWORD=your_password \
-  -p 5432:5432 \
-  -d postgres:15
-```
+SQLite adalah database file-based yang tidak memerlukan server terpisah. Database akan dibuat otomatis saat menjalankan migrasi.
 
 ### 3. Environment Variables
 
 1. Copy file environment:
 ```bash
-cp env.example.txt .env
+cp .env.example .env
 ```
 
-2. Update `DATABASE_URL` di file `.env`:
+2. Pastikan `DATABASE_URL` di file `.env` sudah menggunakan SQLite:
 ```env
-DATABASE_URL="postgresql://dashboard_user:your_password@localhost:5432/nextjs_dashboard"
+DATABASE_URL="file:./dev.db"
 ```
+
+File database SQLite (`dev.db`) akan dibuat otomatis di direktori `prisma/`.
 
 ### 4. Generate Prisma Client
 
 ```bash
-pnpm db:generate
+npx prisma generate
 ```
 
-### 5. Push Database Schema
+### 5. Setup Database dengan Migrations
 
 ```bash
-pnpm db:push
+npx prisma migrate dev --name init
 ```
 
-Atau jika ingin menggunakan migrations:
-
-```bash
-pnpm db:migrate
-```
+Perintah ini akan:
+- Membuat file database SQLite (`dev.db`)
+- Membuat folder migrations dengan schema awal
+- Generate Prisma client
 
 ### 6. (Opsional) Seed Database
 
-Untuk menambahkan data sample, Anda bisa membuat script seed atau menggunakan Prisma Studio:
+Untuk menambahkan data sample:
 
 ```bash
-pnpm db:studio
+npx prisma db seed
+```
+
+Untuk membuka Prisma Studio dan manage data:
+
+```bash
+npx prisma studio
 ```
 
 ## Available Scripts
 
-- `pnpm db:generate` - Generate Prisma client
-- `pnpm db:push` - Push schema ke database tanpa migrations
-- `pnpm db:migrate` - Buat dan jalankan migrations
-- `pnpm db:studio` - Buka Prisma Studio untuk manage data
+- `npx prisma generate` - Generate Prisma client
+- `npx prisma migrate dev` - Buat dan jalankan migrations untuk development
+- `npx prisma db seed` - Jalankan seed script
+- `npx prisma studio` - Buka Prisma Studio untuk manage data
+- `npx prisma migrate reset` - Reset database dan jalankan ulang semua migrations
 
 ## API Endpoints
 
