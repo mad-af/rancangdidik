@@ -117,6 +117,15 @@ export async function updateDocument(
   return response.json();
 }
 
+// Get a single document by ID (alias for getDocumentById)
+export async function getDocument(id: number): Promise<Document> {
+  const response = await getDocumentById(id);
+  if (!response.document) {
+    throw new Error(`Document with ID ${id} not found`);
+  }
+  return response.document;
+}
+
 // Delete a document
 export async function deleteDocument(
   id: number

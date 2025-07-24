@@ -5,8 +5,10 @@ import { Input } from "@/components/ui/input"
 import { DownloadIcon, PlusIcon } from "lucide-react"
 import { RPPTable } from "@/components/rpp/RPPTable"
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 
 export default function RPPPage() {
+  const router = useRouter()
   const [searchQuery, setSearchQuery] = useState("")
   return (
     <div className="p-6 space-y-6">
@@ -17,7 +19,7 @@ export default function RPPPage() {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="w-1/3" />
-          <Button>
+          <Button onClick={() => router.push("/dashboard/rpp/create")}>
             <PlusIcon className="mr-2 h-4 w-4" />
             Add New
           </Button>

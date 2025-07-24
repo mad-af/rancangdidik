@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { MoreVertical } from "lucide-react"
 import { deleteDocument } from "@/lib/api/documents"
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 
 type RPPRowMenuProps = {
   documentId: number
@@ -15,11 +16,11 @@ type RPPRowMenuProps = {
 }
 
 export function RPPRowMenu({ documentId, onDocumentDeleted }: RPPRowMenuProps) {
+  const router = useRouter()
   const [isDeleting, setIsDeleting] = useState(false)
 
   const handleEdit = () => {
-    // TODO: Implement edit functionality
-    console.log('Edit document:', documentId)
+    router.push(`/dashboard/rpp/edit/${documentId}`)
   }
 
   const handleDelete = async () => {
