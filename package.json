@@ -87,6 +87,7 @@
     "nuqs": "^2.4.1",
     "pdfkit": "^0.17.1",
     "postcss": "8.4.49",
+    "puppeteer": "^24.15.0",
     "react": "19.0.0",
     "react-day-picker": "^8.10.1",
     "react-dom": "19.0.0",
@@ -110,6 +111,7 @@
   "devDependencies": {
     "@faker-js/faker": "^9.3.0",
     "@types/node": "22.10.2",
+    "@types/puppeteer": "^5.4.7",
     "@types/react": "19.0.1",
     "@types/react-dom": "19.0.2",
     "@types/sort-by": "^1.2.3",

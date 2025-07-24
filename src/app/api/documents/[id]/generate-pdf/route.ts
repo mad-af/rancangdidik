@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import Anthropic from '@anthropic-ai/sdk';
-import PDFDocument from 'pdfkit';
-import { Readable } from 'stream';
+import puppeteer from 'puppeteer';
+
 import path from 'path';
 import fs from 'fs';
 
@@ -43,7 +43,7 @@ export async function POST(
     const rppContent = await generateRPPContent(document);
 
     // Generate PDF
-    const pdfBuffer = await generatePDF(rppContent, document);
+    const pdfBuffer = await generatePDF();
 
     // Save PDF to public folder
     const fileName = `RPP_${document.subject}_${document.phase}_${Date.now()}.pdf`;
@@ -133,104 +133,56 @@ Format output dalam bentuk teks yang terstruktur dengan heading yang jelas.`;
   return response.content[0].type === 'text' ? response.content[0].text : '';
 }
 
-// Generate PDF from RPP content
-async function generatePDF(content: string, document: any): Promise<Buffer> {
-  return new Promise((resolve, reject) => {
-    try {
-      // Load custom font
-      const fontPath = path.join(process.cwd(), 'public', 'Lora-VariableFont_wght.ttf');
-      
-      const doc = new PDFDocument({
-        size: 'A4',
-        margins: {
-          top: 50,
-          bottom: 50,
-          left: 50,
-          right: 50
-        },
-        font: fontPath
-      });
+// Generate PDF from HTML template
+async function generatePDF(): Promise<Buffer> {
+  let browser;
+  try {
+    // Read the HTML template
+    const templatePath = path.join(process.cwd(), 'src', 'app', 'api', 'documents', '[id]', 'generate-pdf', 'templatepdf.html');
+    const htmlTemplate = fs.readFileSync(templatePath, 'utf8');
 
-      const chunks: Buffer[] = [];
-      
-      doc.on('data', (chunk) => chunks.push(chunk));
-      doc.on('end', () => resolve(Buffer.concat(chunks)));
-      doc.on('error', reject);
+    // Launch puppeteer browser
+    browser = await puppeteer.launch({
+      headless: true,
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-accelerated-2d-canvas',
+        '--no-first-run',
+        '--no-zygote',
+        '--single-process',
+        '--disable-gpu'
+      ]
+    });
 
-      // Add header
-      doc.fontSize(16)
-         .text('RENCANA PELAKSANAAN PEMBELAJARAN (RPP)', {
-           align: 'center'
-         })
-         .moveDown();
+    const page = await browser.newPage();
+    
+    // Set the HTML content
+    await page.setContent(htmlTemplate, {
+      waitUntil: 'networkidle0'
+    });
 
-      // Add document info
-      doc.fontSize(12)
-         .text(`Mata Pelajaran: ${document.subject}`, { align: 'left' })
-         .text(`Nama Guru: ${document.teacherName}`)
-         .text(`Fase: ${document.phase}`)
-         .text(`Tahun Ajaran: ${document.academicYear}`)
-         .moveDown();
+    // Generate PDF
+    const pdfBuffer = await page.pdf({
+      format: 'A4',
+      printBackground: true,
+      displayHeaderFooter: true,
+      outline: false,
+      // margin: {
+      //   top: '0.5in',
+      //   right: '0.5in',
+      //   bottom: '0.5in',
+      //   left: '0.5in'
+      // }
+    });
 
-      // Add separator line
-      doc.moveTo(50, doc.y)
-         .lineTo(545, doc.y)
-         .stroke()
-         .moveDown();
-
-      // Add generated content
-      const lines = content.split('\n');
-      
-      for (const line of lines) {
-        if (line.trim() === '') {
-          doc.moveDown(0.5);
-          continue;
-        }
-
-        // Check if line is a heading (starts with number or contains ":")
-        if (line.match(/^\d+\.|^[A-Z][^a-z]*:/) || line.includes(':')) {
-          doc.fontSize(12)
-             .text(line.trim(), {
-               align: 'left',
-               continued: false
-             })
-             .moveDown(0.3);
-        } else {
-          doc.fontSize(11)
-             .text(line.trim(), {
-               align: 'justify',
-               indent: line.startsWith('-') || line.startsWith('•') ? 20 : 0
-             })
-             .moveDown(0.2);
-        }
-
-        // Add new page if needed
-        if (doc.y > 750) {
-          doc.addPage();
-        }
-      }
-
-      // Add footer
-      const pageRange = doc.bufferedPageRange();
-      const pageCount = pageRange.count;
-      const startPage = pageRange.start;
-      
-      // Iterate through actual page range instead of assuming it starts at 0
-      for (let i = 0; i < pageCount; i++) {
-        const pageIndex = startPage + i;
-        doc.switchToPage(pageIndex);
-        doc.fontSize(9)
-           .text(
-             `Halaman ${i + 1} dari ${pageCount}`,
-             50,
-             750,
-             { align: 'center' }
-           );
-      }
-
-      doc.end();
-    } catch (error) {
-      reject(error);
+    await browser.close();
+    return Buffer.from(pdfBuffer);
+  } catch (error) {
+    if (browser) {
+      await browser.close();
     }
-  });
+    throw error;
+  }
 }

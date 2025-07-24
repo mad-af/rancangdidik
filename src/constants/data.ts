@@ -24,90 +24,79 @@ export type Document = {
 //Info: The following data is used for the sidebar navigation and Cmd K bar.
 export const navItems: NavItem[] = [
   {
-    title: 'List RPP',
-    url: '/dashboard/rpp',
-    icon: Category,
+    title: 'Overview',
+    url: '/dashboard/overview',
+    icon: Chart,
     isActive: false,
-    shortcut: ['d', 'd'],
-    items: [] // Empty array as there are no child items for Dashboard
+    shortcut: ['o', 'v'],
+    items: []
   },
   {
-    title: 'Analytics',
+    title: 'RPP Management',
+    url: '/dashboard/rpp',
+    icon: Document,
+    shortcut: ['r', 'p'],
+    isActive: false,
+    items: [
+      {
+        title: 'List RPP',
+        url: '/dashboard/rpp'
+      },
+      {
+        title: 'Create RPP',
+        url: '/dashboard/rpp/create'
+      }
+    ]
+  },
+  {
+    title: 'Documents',
     url: '/dashboard/documents',
-    icon: Chart,
+    icon: Category,
     shortcut: ['d', 'o'],
     isActive: false,
-    items: [] // No child items
-  },
-  // {
-  //   title: 'Account',
-  //   url: '#', // Placeholder as there is no direct link for the parent
-  //   icon: 'billing',
-  //   isActive: true,
-
-  //   items: [
-  //     {
-  //       title: 'Profile',
-  //       url: '/dashboard/profile',
-  //       icon: 'userPen',
-  //       shortcut: ['m', 'm']
-  //     },
-  //     {
-  //       title: 'Login',
-  //       shortcut: ['l', 'l'],
-  //       url: '/',
-  //       icon: 'login'
-  //     }
-  //   ]
-  // },
-  {
-    title: 'Invoice',
-    url: '/dashboard/kanban',
-    icon: Ticket,
-    shortcut: ['k', 'k'],
-    isActive: false,
-    items: [] // No child items
+    items: []
   },
   {
     title: 'Schedule',
-    url: '/dashboard/kanban',
-    icon: Document,
-    shortcut: ['k', 'k'],
+    url: '/dashboard/schedule',
+    icon: Calendar,
+    shortcut: ['s', 'c'],
     isActive: false,
-    items: [] // No child items
+    items: []
   },
   {
-    title: 'Calendar',
-    url: '/dashboard/kanban',
-    icon: Calendar,
-    shortcut: ['k', 'k'],
+    title: 'Analytics',
+    url: '/dashboard/analytics',
+    icon: Activity,
+    shortcut: ['a', 'n'],
     isActive: false,
-    items: [] // No child items
+    items: []
   },
   {
     title: 'Messages',
-    url: '/dashboard/kanban',
-    icon: Activity,
-    shortcut: ['k', 'k'],
-    isActive: false,
-    items: [] // No child items
-  },
-  {
-    title: 'Notification',
-    url: '/dashboard/kanban',
+    url: '/dashboard/messages',
     icon: Notification,
-    shortcut: ['k', 'k'],
+    shortcut: ['m', 's'],
     isActive: false,
-    items: [] // No child items
+    items: []
   },
   {
     title: 'Settings',
-    url: '/dashboard/kanban',
+    url: '/dashboard/settings',
     icon: Setting,
-    shortcut: ['k', 'k'],
+    shortcut: ['s', 't'],
     isActive: false,
-    items: [] // No child items
-  },
+    items: [
+      {
+        title: 'Profile',
+        url: '/dashboard/profile'
+      },
+      {
+        title: 'Preferences',
+        url: '/dashboard/settings/preferences'
+      }
+    ]
+  }
 ];
 
 export interface SaleUser {
