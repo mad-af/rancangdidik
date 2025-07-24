@@ -53,17 +53,12 @@
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-y-2 gap-x-4 text-gray-700">
 
-        <p><strong>Satuan Pendidikan:</strong> SMP Negeri 1 Cerdas</p>
-
-        <p><strong>Mata Pelajaran:</strong> Bahasa Indonesia</p>
-
-        <p><strong>Fase:</strong> D (Kelas VIII)</p>
-
-        <p><strong>Semester:</strong> Genap</p>
-
-        <p><strong>Tahun Ajaran:</strong> 2024/2025</p>
-
-        <p><strong>Nama Guru:</strong></p>
+        <p><strong>Satuan Pendidikan:</strong> {{SCHOOL_NAME}}</p>
+        <p><strong>Mata Pelajaran:</strong> {{SUBJECT}}</p>
+        <p><strong>Fase:</strong> {{PHASE}}</p>
+        <p><strong>Semester:</strong> {{SEMESTER}}</p>
+        <p><strong>Tahun Ajaran:</strong> {{ACADEMIC_YEAR}}</p>
+        <p><strong>Nama Guru:</strong> {{TEACHER_NAME}}</p>
 
       </div>
 
@@ -72,138 +67,31 @@
 
 
     <!-- Capaian Umum Section -->
-
     <section class="mb-8 p-4 bg-green-50 rounded-lg border border-green-200">
-
-      <h2 class="text-xl font-semibold text-green-800 mb-4">CAPAIAN UMUM</h2>
-
+      <h2 class="text-xl font-semibold text-green-800 mb-4">Capaian Umum</h2>
       <p class="text-gray-700 leading-relaxed">
-
-        Pada akhir fase F, peserta didik mengimplementasikan pemodelan gim, pemrograman gim, komputer grafis, serta
-        multimedia dan audio editing untuk mengembangkan gim yang beroperasi pada berbagai perangkat, platform, atau
-        teknologi terkini. Capaian pembelajaran pada elemen-elemen mata pelajaran Pengembangan Gim dapat diuraikan
-        sebagai berikut:
-
+        {{CAPAIAN_UMUM}}
       </p>
-
     </section>
 
 
 
     <!-- Capaian Per Elemen Section -->
-
     <section class="mb-8 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
-
-      <h2 class="text-xl font-semibold text-yellow-800 mb-4">CAPAIAN PER ELEMEN</h2>
-
+      <h2 class="text-xl font-semibold text-yellow-800 mb-4">Capaian Per Elemen</h2>
       <div class="space-y-6 text-gray-700">
-
-        <div>
-
-          <h3 class="font-medium text-lg mb-1">A. Pemodelan Gim</h3>
-
-          <p class="leading-relaxed">
-
-            Peserta didik mampu memahami game concept, game design document, game mechanic concept, game system concept,
-            game technical concept, game level concept, game narrative concept, game user research concept, game design
-            prototype, dan game design balancing.
-
-          </p>
-
-        </div>
-
-        <div>
-
-          <h3 class="font-medium text-lg mb-1">B. Pemrograman Gim</h3>
-
-          <p class="leading-relaxed">
-
-            Peserta didik mampu menerapkan pemrograman berbasis teks dan grafis yang diintegrasikan pada pemrograman gim
-            (game engine), mencakup gameplay, UI/UX (graphical user interface), struktur data, integrasi objek statis
-            dan dinamis (static and dynamic assets integration), fungsionalitas tambahan pada game engine (tools and
-            plugin implementation) serta menerapkan pengujian perangkat lunak meliputi debugging, optimasi kinerja gim,
-            dan pembaharuan.
-
-          </p>
-
-        </div>
-
-        <div>
-
-          <h3 class="font-medium text-lg mb-1">C. Komputer Grafis dan Multimedia</h3>
-
-          <p class="leading-relaxed">
-
-            Peserta didik mampu menerapkan key concept art, art design document, character design, environment design,
-            property design serta menerapkan pengembangan aset visual gim sesuai minatnya meliputi 2D perpetaan (cut out
-            animation), model 3D dengan teknik digital sculpting, tekstur permukaan 3D (texturing), struktur atau
-            kerangka dalam memanipulasi objek atau benda atau karakter (rigging), akting pergerakan karakter, simulasi
-            gerak digital benda (rigid/soft body), atau sifat bahan 3D (shading).
-
-          </p>
-
-        </div>
-
+        {{CAPAIAN_PER_ELEMEN}}
       </div>
-
     </section>
 
 
 
     <!-- Kegiatan Pembelajaran Section -->
-
     <section class="p-4 bg-purple-50 rounded-lg border border-purple-200">
-
       <h2 class="text-xl font-semibold text-purple-800 mb-4">Kegiatan Pembelajaran</h2>
-
-
-
-      <!-- Minggu ke-1 -->
-
-      <div class="mb-6 pb-4 border-b border-purple-200 last:border-b-0">
-
-        <h3 class="font-medium text-lg text-purple-700 mb-2">Minggu ke-1</h3>
-
-        <div class="space-y-1 text-gray-700">
-
-          <p><strong>Tujuan Pembelajaran:</strong> Siswa mengenal struktur teks eksplanasi</p>
-
-          <p><strong>Topik:</strong> Pengantar teks eksplanasi</p>
-
-          <p><strong>Aktivitas Inti:</strong> Diskusi klasikal, membaca contoh teks</p>
-
-          <p><strong>Asesmen:</strong> Pertanyaan pemantik</p>
-
-          <p><strong>Alokasi Waktu:</strong> 2 JP ($2 \times 40$ menit)</p>
-
-        </div>
-
+      <div class="text-gray-700">
+        {{RPP_CONTENT}}
       </div>
-
-
-
-      <!-- Minggu ke-2 -->
-
-      <div class="mb-6 pb-4 border-b border-purple-200 last:border-b-0">
-
-        <h3 class="font-medium text-lg text-purple-700 mb-2">Minggu ke-2</h3>
-
-        <div class="space-y-1 text-gray-700">
-
-          <p><strong>Tujuan Pembelajaran:</strong> Siswa mengenal struktur teks eksplanasi</p>
-
-          <p><strong>Topik:</strong> Pengantar teks eksplanasi</p>
-
-          <p><strong>Aktivitas Inti:</strong> Diskusi klasikal, membaca contoh teks</p>
-
-          <p><strong>Asesmen:</strong> Pertanyaan pemantik</p>
-
-          <p><strong>Alokasi Waktu:</strong> 2 JP ($2 \times 40$ menit)</p>
-
-        </div>
-
-      </div>
-
     </section>
 
   </div>
