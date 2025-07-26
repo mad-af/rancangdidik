@@ -239,8 +239,12 @@ async function generatePDF(document: any, rppContent: string): Promise<Buffer> {
     const pdfBuffer = await page.pdf({
       format: 'A4',
       printBackground: true,
-      displayHeaderFooter: true,
-      outline: false,
+      margin: {
+        top: '2cm',
+        bottom: '2cm',
+        left: '2.5cm',
+        right: '2.5cm'
+      }
     });
 
     await browser.close();
