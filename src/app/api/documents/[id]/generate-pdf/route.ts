@@ -84,50 +84,49 @@ export async function POST(
 
 // Generate RPP content using Anthropic Claude
 async function generateRPPContent(document: any) {
-   const promptForAnthropic = `Anda adalah asisten yang membantu membuat konten Rencana Pelaksanaan Pembelajaran (RPP).
-berdasarkan data yang diberikan, buatlah konten RPP untuk mata pelajaran ${document.subject} dengan guru ${document.teacherName} pada fase ${document.phase} di tahun ajaran ${document.academicYear}.
+   const promptForAnthropic = `Anda adalah asisten yang membantu membuat konten Rencana Pelaksanaan Pembelajaran (RPP) dalam format Kurikulum Merdeka.
 
-Saya ingin Anda menghasilkan data RPP dalam format JSON. Ikuti struktur JSON yang diberikan di bawah ini dengan tepat.
+Berdasarkan data berikut ini, buatkan konten RPP lengkap untuk mata pelajaran ${document.subject} oleh guru ${document.teacherName}, pada fase ${document.phase}, semester ${document.semester}, tahun ajaran ${document.academicYear}, dan jenis asesmen berupa **${document.assessment || "asesmen tidak ditentukan"}**.
 
-Berikut adalah detail konten yang saya butuhkan:
-1.  **Capaian Umum:** Satu paragraf deskriptif tentang tujuan umum pembelajaran ${document.subject}.
-2.  **Capaian Per Elemen:** Berikan daftar poin-poin capaian per elemen. Setiap poin harus memiliki judul dan deskripsi.
-    * Judul Elemen: Deskripsi singkat tentang apa yang akan dipelajari siswa terkait elemen tersebut.
-3.  **Kegiatan Pembelajaran:** Berikan daftar poin-poin kegiatan pembelajaran per minggu. Setiap poin harus mencakup detail untuk satu minggu.
-    * Minggu ke-X:
-        * Tujuan Pembelajaran: (Tujuan untuk ${document.subject})
-        * Topik: (Topik untuk ${document.subject})
-        * Aktivitas Inti: (Aktivitas untuk ${document.subject})
-        * Asesmen: (Asesmen untuk ${document.subject})
-        * Alokasi Waktu: (Format: n JP (n x 40 menit)) # JP adalah jam pelajaran
+Dokumen ini terdiri dari tiga bagian utama:
+1. **Capaian Umum** — satu paragraf naratif yang menjelaskan secara umum tujuan pembelajaran dari mata pelajaran ${document.subject}.
+2. **Capaian Per Elemen** — daftar poin-poin yang masing-masing terdiri dari:
+   - **Judul Elemen**: nama atau topik elemen.
+   - **Deskripsi**: penjabaran singkat capaian dari elemen tersebut.
+3. **Kegiatan Pembelajaran Mingguan** — daftar kegiatan selama ${document.sessionCount || 12} minggu, dengan masing-masing minggu memiliki informasi berikut:
+   - **Minggu ke-X**
+   - **Tujuan Pembelajaran**
+   - **Topik**
+   - **Aktivitas Inti**
+   - **Asesmen**: disesuaikan dengan jenis asesmen yaitu ${document.assessment || "tugas/ujian/diskusi"}
+   - **Alokasi Waktu**: gunakan format n JP (n x 40 menit) dan buatlah jumlah JP yang wajar untuk satu sesi.
 
-Pastikan konten relevan dengan mata pelajaran ${document.subject} untuk bagian Kegiatan Pembelajaran, sedangkan Capaian Umum dan Per Elemen sesuai dengan ${document.subject} seperti yang terlihat di dokumen RPP.
-
-Output Anda harus berupa objek JSON tunggal dengan struktur berikut:
+### Format Output
+Kembalikan hasil dalam format JSON PENUH dan VALID, TANPA penjelasan tambahan. Struktur wajib seperti ini:
 
 \`\`\`json
 {
-    "capaianUmum": "string",
-    "capaianPerElemen": [
-        {
-            "title": "string",
-            "description": "string"
-        }
-    ],
-    "kegiatanPembelajaran": [
-        {
-            "minggu": "string",
-            "tujuanPembelajaran": "string",
-            "topik": "string",
-            "aktivitasInti": "string",
-            "asesmen": "string",
-            "alokasiWaktu": "string"
-        }
-    ]
+  "capaianUmum": "string",
+  "capaianPerElemen": [
+    {
+      "title": "string",
+      "description": "string"
+    }
+  ],
+  "kegiatanPembelajaran": [
+    {
+      "minggu": "string",
+      "tujuanPembelajaran": "string",
+      "topik": "string",
+      "aktivitasInti": "string",
+      "asesmen": "string",
+      "alokasiWaktu": "string"
+    }
+  ]
 }
 \`\`\`
 
-Mohon berikan hanya output JSON yang valid, tanpa teks penjelasan tambahan di luar blok JSON.
+Catatan: Pastikan jumlah elemen dalam kegiatanPembelajaran sesuai dengan nilai sesi: ${document.sessionCount || 12} minggu. Gunakan bahasa Indonesia yang baku dan sesuai konteks pendidikan.
 `;
 
   const response = await anthropic.messages.create({

@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Slider } from "@/components/ui/slider"
 import { ArrowLeft, Loader2 } from "lucide-react"
 import { createDocument, type CreateDocumentData } from "@/lib/api/documents"
 import { toast } from "sonner"
@@ -15,23 +16,29 @@ import { toast } from "sonner"
 export default function CreateRPPPage() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
-  const [formData, setFormData] = useState<CreateDocumentData>({
+
+  const [formData, setFormData] = useState<CreateDocumentData & {
+    assessment?: string
+    sessionCount?: string
+  }>({
     subject: "",
     teacherName: "",
     phase: "",
     semester: "",
     academicYear: "",
-    attachmentUrl: ""
+    attachmentUrl: "",
+    assessment: "",
+    sessionCount: "12"
   })
 
-  const handleInputChange = (field: keyof CreateDocumentData, value: string) => {
+  const handleInputChange = (field: keyof typeof formData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }))
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
-    if (!formData.subject || !formData.teacherName || !formData.phase || !formData.semester || !formData.academicYear) {
+
+    if (!formData.subject || !formData.teacherName || !formData.phase || !formData.semester || !formData.academicYear || !formData.assessment) {
       toast.error("Mohon lengkapi semua field yang wajib diisi")
       return
     }
@@ -152,20 +159,60 @@ export default function CreateRPPPage() {
               </Select>
             </div>
 
+            {/* ✅ Assessment Type */}
             <div className="space-y-2">
-              <Label htmlFor="attachmentUrl">URL Attachment (Opsional)</Label>
+              <Label htmlFor="assessment">Jenis Asesmen *</Label>
+              <Select 
+                value={formData.assessment || ""}
+                onValueChange={(value) => handleInputChange("assessment", value)}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Pilih jenis asesmen" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Tugas">Tugas (PR / Di Sekolah)</SelectItem>
+                  <SelectItem value="Ujian">Ujian</SelectItem>
+                  <SelectItem value="Diskusi">Diskusi</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* ✅ File Upload */}
+            <div className="space-y-2">
+              <Label htmlFor="attachment">Upload File (Opsional)</Label>
               <Input
-                id="attachmentUrl"
-                type="url"
-                value={formData.attachmentUrl}
-                onChange={(e) => handleInputChange("attachmentUrl", e.target.value)}
-                placeholder="https://example.com/document.pdf"
+                id="attachment"
+                type="file"
+                accept=".pdf"
+                onChange={(e) => {
+                  const file = e.target.files?.[0]
+                  if (file) {
+                    const fileUrl = URL.createObjectURL(file)
+                    handleInputChange("attachmentUrl", fileUrl)
+                  }
+                }}
               />
               <p className="text-sm text-muted-foreground">
-                Masukkan URL file PDF atau dokumen lainnya
+                File akan digunakan untuk lampiran RPP (PDF)
               </p>
             </div>
 
+            {/* ✅ Session Count Slider */}
+            <div className="space-y-2">
+              <Label htmlFor="sessionCount">Jumlah Pertemuan</Label>
+              <Slider
+                defaultValue={[12]}
+                min={6}
+                max={24}
+                step={1}
+                onValueChange={([value]) => handleInputChange("sessionCount", value.toString())}
+              />
+              <p className="text-sm text-muted-foreground">
+                Akan digenerate sebanyak {formData.sessionCount} pertemuan
+              </p>
+            </div>
+
+            {/* Buttons */}
             <div className="flex justify-end space-x-4 pt-4">
               <Button 
                 type="button" 
