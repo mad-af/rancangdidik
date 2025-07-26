@@ -202,7 +202,7 @@ export function RPPTable({ searchQuery }: RPPTableProps) {
                   onClick={() => window.open(doc.attachmentUrl, '_blank')}
                 >
                   <PDF className="w-4 h-4 mr-1" />
-                  Download PDF
+                  PDF
                 </Button>
               ) : (
                 <span className="text-sm text-muted-foreground">No attachment</span>
