@@ -2,14 +2,13 @@ import { useState, useEffect } from "react"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Button } from "@/components/ui/button"
 import PDF from "@/assets/icons/PDF"
-import { Loader2, ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react"
+import { Loader2, ChevronLeft, ChevronRight, MoreHorizontal, FileText } from "lucide-react"
 import Delete from "@/assets/icons/Delete"
-import { deleteDocument } from "@/lib/api/documents"
-import { toast } from "sonner"
 import Calendar from "@/assets/icons/Calendar"
-import { RPPRowMenu } from "./RPPRowMenu"
-import { getDocuments, type DocumentFilters } from "@/lib/api/documents"
+import { toast } from "sonner"
+import { getDocuments, deleteDocument, generateDocumentPDF, type DocumentFilters } from "@/lib/api/documents"
 import { Document } from "@/constants/data"
+import { RPPRowMenu } from "./RPPRowMenu"
 
 type RPPTableProps = {
   searchQuery: string
@@ -22,6 +21,7 @@ export function RPPTable({ searchQuery }: RPPTableProps) {
   const [totalDocuments, setTotalDocuments] = useState(0)
   const [currentPage, setCurrentPage] = useState(1)
   const [selectedRows, setSelectedRows] = useState<number[]>([])
+  const [generatingPDFId, setGeneratingPDFId] = useState<number | null>(null)
 
   const limit = 10
 
@@ -39,7 +39,7 @@ export function RPPTable({ searchQuery }: RPPTableProps) {
       const response = await getDocuments(filters)
       setDocuments(response.documents)
       setTotalDocuments(response.total_documents)
-      setSelectedRows([]) // reset selection on page change
+      setSelectedRows([])
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch documents')
     } finally {
@@ -73,11 +73,10 @@ export function RPPTable({ searchQuery }: RPPTableProps) {
   }
   const toggleRow = (index: number) => {
     setSelectedRows((prev) =>
-      prev.includes(index)
-        ? prev.filter((i) => i !== index)
-        : [...prev, index]
+      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
     )
   }
+
   const handleBulkDelete = async () => {
     const confirmed = confirm("Are you sure you want to delete the selected documents?")
     if (!confirmed) return
@@ -96,6 +95,34 @@ export function RPPTable({ searchQuery }: RPPTableProps) {
       toast.error("Failed to delete some or all documents. Please try again.")
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handleGeneratePDF = async (docId: number) => {
+    try {
+      setGeneratingPDFId(docId)
+      toast.info('Sedang menggenerate PDF RPP...')
+
+      const response = await generateDocumentPDF(docId)
+
+      if (response.success) {
+        const link = document.createElement('a')
+        link.href = response.pdfUrl
+        link.download = response.fileName
+        link.target = '_blank'
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+
+        toast.success('PDF RPP berhasil digenerate dan disimpan!')
+      } else {
+        toast.error(response.message || 'Gagal menggenerate PDF')
+      }
+    } catch (error) {
+      console.error('Failed to generate PDF:', error)
+      toast.error('Gagal menggenerate PDF. Silakan coba lagi.')
+    } finally {
+      setGeneratingPDFId(null)
     }
   }
 
@@ -123,7 +150,7 @@ export function RPPTable({ searchQuery }: RPPTableProps) {
   return (
     <div className="space-y-4">
       {/* Header */}
-      <div className="grid grid-cols-[40px_1fr_1fr_1fr_1fr_1fr_1fr_40px] items-center px-6 text-sm font-semibold text-muted-foreground">
+      <div className="grid grid-cols-[40px_1fr_1fr_1fr_1fr_1fr_1fr_1fr_35px] items-center px-6 text-sm font-semibold text-muted-foreground">
         <Checkbox
           checked={isAllSelected}
           onCheckedChange={toggleSelectAll}
@@ -134,6 +161,7 @@ export function RPPTable({ searchQuery }: RPPTableProps) {
         <div>Tahun Ajaran</div>
         <div>Tanggal Pembuatan</div>
         <div>Attachments</div>
+        <div>Generate</div>
         <div>
           <Button
             variant="ghost"
@@ -151,7 +179,7 @@ export function RPPTable({ searchQuery }: RPPTableProps) {
         documents.map((doc, idx) => (
           <div
             key={doc.id}
-            className="grid grid-cols-[40px_1fr_1fr_1fr_1fr_1fr_1fr_40px] items-center bg-white rounded-xl shadow-sm px-6 py-4 hover:shadow-md transition"
+            className="grid grid-cols-[40px_1fr_1fr_1fr_1fr_1fr_1fr_1fr_40px] items-center bg-white rounded-xl shadow-sm px-6 py-4 hover:shadow-md transition"
           >
             <Checkbox
               checked={selectedRows.includes(idx)}
@@ -179,6 +207,18 @@ export function RPPTable({ searchQuery }: RPPTableProps) {
               ) : (
                 <span className="text-sm text-muted-foreground">No attachment</span>
               )}
+            </div>
+            <div className="flex justify-start">
+              <Button
+                variant="outline"
+                size="sm"
+                className="text-blue-600 border-blue-400 bg-blue-50 hover:bg-blue-100"
+                onClick={() => handleGeneratePDF(doc.id)}
+                disabled={generatingPDFId === doc.id}
+              >
+                <FileText className="w-4 h-4 mr-1" />
+                {generatingPDFId === doc.id ? 'Generating...' : 'Generate PDF'}
+              </Button>
             </div>
             <div className="justify-self-end">
               <RPPRowMenu
