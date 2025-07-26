@@ -1,7 +1,11 @@
 import { useState, useEffect } from "react"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Button } from "@/components/ui/button"
-import { DownloadIcon, Loader2, ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react"
+import PDF from "@/assets/icons/PDF"
+import { Loader2, ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react"
+import Delete from "@/assets/icons/Delete"
+import { deleteDocument } from "@/lib/api/documents"
+import { toast } from "sonner"
 import Calendar from "@/assets/icons/Calendar"
 import { RPPRowMenu } from "./RPPRowMenu"
 import { getDocuments, type DocumentFilters } from "@/lib/api/documents"
@@ -74,6 +78,26 @@ export function RPPTable({ searchQuery }: RPPTableProps) {
         : [...prev, index]
     )
   }
+  const handleBulkDelete = async () => {
+    const confirmed = confirm("Are you sure you want to delete the selected documents?")
+    if (!confirmed) return
+
+    try {
+      setLoading(true)
+      const documentsToDelete = selectedRows.map((i) => documents[i])
+      const deletePromises = documentsToDelete.map((doc) =>
+        deleteDocument(doc.id)
+      )
+      await Promise.all(deletePromises)
+      toast.success(`${documentsToDelete.length} document(s) deleted`)
+      fetchDocuments()
+    } catch (error) {
+      console.error("Failed to delete documents:", error)
+      toast.error("Failed to delete some or all documents. Please try again.")
+    } finally {
+      setLoading(false)
+    }
+  }
 
   if (loading) {
     return (
@@ -110,7 +134,16 @@ export function RPPTable({ searchQuery }: RPPTableProps) {
         <div>Tahun Ajaran</div>
         <div>Tanggal Pembuatan</div>
         <div>Attachments</div>
-        <div></div>
+        <div>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handleBulkDelete}
+            disabled={selectedRows.length === 0 || loading}
+          >
+            <Delete className="w-4 h-4 text-red-500" />
+          </Button>
+        </div>
       </div>
 
       {/* Rows */}
@@ -140,8 +173,8 @@ export function RPPTable({ searchQuery }: RPPTableProps) {
                   className="text-green-600 border-green-400 bg-green-50 hover:bg-green-100"
                   onClick={() => window.open(doc.attachmentUrl, '_blank')}
                 >
-                  <DownloadIcon className="w-4 h-4 mr-1" />
-                  PDF
+                  <PDF className="w-4 h-4 mr-1" />
+                  Download PDF
                 </Button>
               ) : (
                 <span className="text-sm text-muted-foreground">No attachment</span>
